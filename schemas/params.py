@@ -4,8 +4,8 @@ from typing import Optional
 from pydantic import BaseModel
 
 class Empresas(BaseModel):
-  id_empresa = Optional[int] = None
-  nombre = Optional[str] = None
+  id_empresa : Optional[int] = None
+  nombre : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -13,8 +13,8 @@ class Empresas(BaseModel):
       orm_mode = True
 
 class Ciudades(BaseModel):
-  id_ciudad = Optional[int] = None
-  nombre = Optional[str] = None
+  id_ciudad : Optional[int] = None
+  nombre : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -22,9 +22,9 @@ class Ciudades(BaseModel):
       orm_mode = True
 
 class EmpresasCiudades(BaseModel):
-  id_empresa_ciudad = Optional[int] = None
-  id_empresa = Optional[int] = None
-  id_ciudad = Optional[int] = None
+  id_empresa_ciudad : Optional[int] = None
+  id_empresa : Optional[int] = None
+  id_ciudad : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -32,8 +32,8 @@ class EmpresasCiudades(BaseModel):
       orm_mode = True
 
 class Areas(BaseModel):
-  id_area = Optional[int] = None
-  nombre = Optional[str] = None
+  id_area : Optional[int] = None
+  nombre : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -41,9 +41,9 @@ class Areas(BaseModel):
       orm_mode = True
 
 class Cargo(BaseModel):
-  id_cargo = Optional[int] = None
-  nombre = Optional[str] = None
-  id_area = Optional[int] = None
+  id_cargo : Optional[int] = None
+  nombre : Optional[str] = None
+  id_area : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -51,8 +51,8 @@ class Cargo(BaseModel):
       orm_mode = True
 
 class Equipo(BaseModel):
-  id_equipo = Optional[int] = None
-  nombre = Optional[str] = None
+  id_equipo : Optional[int] = None
+  nombre : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -60,8 +60,8 @@ class Equipo(BaseModel):
       orm_mode = True
 
 class Roles(BaseModel):
-  id_rol = Optional[int] = None
-  nombre = Optional[str] = None
+  id_rol : Optional[int] = None
+  nombre : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -69,8 +69,8 @@ class Roles(BaseModel):
       orm_mode = True
 
 class Permisos(BaseModel):
-  id_permiso = Optional[int] = None
-  nombre = Optional[str] = None
+  id_permiso : Optional[int] = None
+  nombre : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -78,9 +78,9 @@ class Permisos(BaseModel):
       orm_mode = True
 
 class RolesPermisos(BaseModel):
-  id_rol_permiso = Optional[int] = None
-  id_rol = Optional[int] = None
-  id_permiso = Optional[int] = None
+  id_rol_permiso : Optional[int] = None
+  id_rol : Optional[int] = None
+  id_permiso : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -88,9 +88,9 @@ class RolesPermisos(BaseModel):
       orm_mode = True
 
 class UsuariosPermisos(BaseModel):
-  id_usuario_permiso = Optional[int] = None
-  id_usuario = Optional[int] = None
-  id_permiso = Optional[int] = None
+  id_usuario_permiso : Optional[int] = None
+  id_usuario : Optional[int] = None
+  id_permiso : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -98,11 +98,11 @@ class UsuariosPermisos(BaseModel):
       orm_mode = True
 
 class Logs(BaseModel):
-  id_log = Optional[int] = None
-  id_usuario = Optional[int] = None
-  accion = Optional[str] = None
-  tabla = Optional[str] = None
-  descripcion = Optional[str] = None
+  id_log : Optional[int] = None
+  id_usuario : Optional[int] = None
+  accion : Optional[str] = None
+  tabla : Optional[str] = None
+  descripcion : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   class Config:
       orm_mode = True

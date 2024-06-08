@@ -4,3 +4,4 @@ sqlalchemy
 pymysql
 uvicorn
 python-dotenv
+werkzeug

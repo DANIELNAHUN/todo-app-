@@ -1,6 +1,3 @@
-import email
-from enum import nonmember
-import token
 from config.db_todo import Base
 from sqlalchemy import Column, ForeignKey, Text
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime

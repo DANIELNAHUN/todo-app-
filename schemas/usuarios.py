@@ -21,18 +21,18 @@ class Usuario(BaseModel):
   apellido_paterno: Optional[str] = None
   apellido_materno: Optional[str] = None
   email: Optional[str] = None
-  celular_personal = Optional[int] = None
-  celular_corporativo = Optional[int] = None
-  id_empresa = Optional[int] = None
-  id_ciudad = Optional[int] = None
-  id_area = Optional[int] = None
-  id_cargo = Optional[int] = None
-  id_equipo = Optional[int] = None
-  usuario = Optional[str] = None
-  password = Optional[str] = None
-  token = Optional[str] = None
-  id_rol = Optional[int] = None
-  id_estado_usuario = Optional[int] = None
+  celular_personal : Optional[int] = None
+  celular_corporativo : Optional[int] = None
+  id_empresa : Optional[int] = None
+  id_ciudad : Optional[int] = None
+  id_area : Optional[int] = None
+  id_cargo : Optional[int] = None
+  id_equipo : Optional[int] = None
+  usuario : Optional[str] = None
+  password : Optional[str] = None
+  token : Optional[str] = None
+  id_rol : Optional[int] = None
+  id_estado_usuario : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
