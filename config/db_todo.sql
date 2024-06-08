@@ -5,13 +5,19 @@ USE todo_app_plus;
 --
 CREATE TABLE empresas(
   id_empresa INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_empresa)
 );
 
 CREATE TABLE ciudades(
   id_ciudad INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_ciudad)
 );
 
@@ -19,6 +25,9 @@ CREATE TABLE empresas_ciudades(
   id_empresa_ciudad INT NOT NULL AUTO_INCREMENT,
   id_empresa INT NOT NULL,
   id_ciudad INT NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_empresa_ciudad)
 );
 
@@ -27,27 +36,39 @@ ALTER TABLE empresas_ciudades ADD FOREIGN KEY (id_ciudad) REFERENCES ciudades(id
 
 CREATE TABLE areas(
   id_area INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_area)
 );
 
 CREATE TABLE cargo(
   id_cargo INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
   id_area INT NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_cargo)
 );
 ALTER TABLE cargo ADD FOREIGN KEY (id_area) REFERENCES areas(id_area);
 
 CREATE TABLE estado_usuario(
   id_estado_usuario INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_estado_usuario)
 );
 
 CREATE TABLE equipo(
   id_equipo INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_equipo)
 );
 
@@ -56,13 +77,19 @@ CREATE TABLE equipo(
 --
 CREATE TABLE roles(
   id_rol INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_rol)
 );
 
 CREATE TABLE permisos(
   id_permiso INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(50) NOT NULL,
+  nombre VARCHAR(250) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_permiso)
 )
 
@@ -70,6 +97,9 @@ CREATE TABLE roles_permisos(
   id_rol_permiso INT NOT NULL AUTO_INCREMENT,
   id_rol INT NOT NULL,
   id_permiso INT NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_rol_permiso)
 );
 
@@ -77,6 +107,9 @@ CREATE TABLE usuarios_roles(
   id_usuario_rol INT NOT NULL AUTO_INCREMENT,
   id_usuario INT NOT NULL,
   id_rol INT NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_usuario_rol)
 );
 
@@ -84,6 +117,9 @@ CREATE TABLE usuarios_permisos(
   id_usuario_permiso INT NOT NULL AUTO_INCREMENT,
   id_usuario INT NOT NULL,
   id_permiso INT NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_usuario_permiso)
 );
 
@@ -127,17 +163,23 @@ ALTER TABLE usuarios ADD FOREIGN KEY (id_equipo) REFERENCES equipo(id_equipo);
 CREATE TABLE estado_nota(
   id_estado_nota INT NOT NULL AUTO_INCREMENT,
   nombre VARCHAR(50) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_estado_nota)
 );
 
 CREATE TABLE prioridad(
   id_prioridad INT NOT NULL AUTO_INCREMENT,
   nombre VARCHAR(50) NOT NULL,
+  fecha_creacion DATETIME NOT NULL,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
   PRIMARY KEY (id_prioridad)
 );
 CREATE TABLE notas(
   id_nota INT NOT NULL AUTO_INCREMENT,
-  titulo VARCHAR(50) NOT NULL,
+  titulo VARCHAR(250) NOT NULL,
   descripcion TEXT NOT NULL,
   id_usuario_create INT NOT NULL,
   id_usuario_asignado INT DEFAULT NULL,
@@ -214,7 +256,6 @@ VALUES
 ('75362422', 'MILTON', 'HACHA', 'VASQUEZ', '930255996', 5, 1, 4, 6, 1, 2, 1, CURRENT_TIMESTAMP),
 ('72757524', 'BRAYAN', 'VALDEZ', 'QUISPE', '995000427', 5, 1, 4, 5, 1, 3, 1, CURRENT_TIMESTAMP);
 
-
 ----
 ---- MODULO ROLES POR USUARIOS
 ----
@@ -222,9 +263,9 @@ INSERT INTO usuarios_roles(id_usuario, id_rol) VALUES (1, 1), (2, 2), (3, 3);
 
 ----
 ---- MODULO NOTAS
+----
 INSERT INTO prioridad(nombre) VALUES ('ALTA'), ('MEDIA'), ('BAJA');
 INSERT INTO estado_nota(nombre) VALUES ('NUEVA'), ('PENDIENTE'), ('EN PROCESO'), ('FINALIZADO');
-----
 INSERT INTO notas(titulo, descripcion, id_usuario_create, id_usuario_asignado, fecha_inicio, id_prioridad, id_estado_nota, fecha_creacion)
 VALUES
 ('Nota de prueba', 'Esta es una nota de prueba', 1, 1, '2022-01-01', 1, 2, CURRENT_TIMESTAMP);

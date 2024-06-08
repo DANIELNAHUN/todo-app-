@@ -7,7 +7,13 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
-connection = f"mysql+pymysql://{os.getenv('USER_TODOAPP')}:{os.getenv('PASS_TODOAPP')}@{os.getenv('IP_TODOAPP')}:{os.getenv('PORT_TODOAPP')}/{os.getenv('NAME_TODOAPP')}"
+usuario = os.getenv('USER_BD')
+password = os.getenv('PASS_BD')
+ip = os.getenv('IP_BD')
+port = os.getenv('PORT_BD')
+nombre_bd = os.getenv('NAME_BD')
+
+connection = f"mysql+pymysql://{usuario}:{password}@{ip}:{port}/{nombre_bd}"
 engine = create_engine(connection)
 SessionLocal = sessionmaker(autoflush=False, autocommit = False, bind=engine)
 Base = declarative_base()
