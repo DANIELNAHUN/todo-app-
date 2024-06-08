@@ -207,33 +207,58 @@ INSERT INTO areas(nombre) VALUES ('CONTABILIDAD'), ('LOGISTICA'), ('MARKETING'),
 INSERT INTO cargo(nombre, id_area) VALUES ('JEFATURA CONTABILIDAD', 1), ('ANALISTA MARKETING', 3), ('ASISTENTE LOGISTICO', 2), ('ENCARGADO TI', 4), ('ASISTENTE TI', 4), ('SUPERVISOR TI', 4);
 INSERT INTO equipo(nombre) VALUES ('TI'), ('DISEÑO'), ('LOGISTICA'), ('CALL CENTER'), ('CONTABILIDAD');
 INSERT INTO estado_usuario(nombre) VALUES ('ACTIVO'), ('INACTIVO'), ('SUSPENDIDO');
-INSERT INTO prioridad(nombre) VALUES ('ALTA'), ('MEDIA'), ('BAJA');
-INSERT INTO estado_nota(nombre) VALUES ('NUEVA'), ('PENDIENTE'), ('EN PROCESO'), ('FINALIZADO');
 INSERT INTO usuarios
 (dni, nombres, apellido_paterno, apellido_materno, celular_personal, id_empresa, id_ciudad, id_area, id_cargo, id_equipo, id_rol, id_estado_usuario, fecha_creacion)
 VALUES
-('74621395', 'DANIEL', 'CALCINA', 'FUENTES', '922996705', 2, 4, 4, 1, 4, 1, CURRENT_TIMESTAMP),
-('75233654', 'MILTON', 'HACHA', 'VASQUEZ', '922996706', 2, 4, 4, 1, 5, 1, CURRENT_TIMESTAMP);
+('74621395', 'DANIEL', 'CALCINA', 'FUENTES', '922996705', 2, 4, 4, 4, 1, 1, 1, CURRENT_TIMESTAMP),
+('75362422', 'MILTON', 'HACHA', 'VASQUEZ', '930255996', 5, 1, 4, 6, 1, 2, 1, CURRENT_TIMESTAMP),
+('72757524', 'BRAYAN', 'VALDEZ', 'QUISPE', '995000427', 5, 1, 4, 5, 1, 3, 1, CURRENT_TIMESTAMP);
+
 
 ----
----- VISTAS
+---- MODULO ROLES POR USUARIOS
 ----
+INSERT INTO usuarios_roles(id_usuario, id_rol) VALUES (1, 1), (2, 2), (3, 3);
+
+----
+---- MODULO NOTAS
+INSERT INTO prioridad(nombre) VALUES ('ALTA'), ('MEDIA'), ('BAJA');
+INSERT INTO estado_nota(nombre) VALUES ('NUEVA'), ('PENDIENTE'), ('EN PROCESO'), ('FINALIZADO');
+----
+INSERT INTO notas(titulo, descripcion, id_usuario_create, id_usuario_asignado, fecha_inicio, id_prioridad, id_estado_nota, fecha_creacion)
+VALUES
+('Nota de prueba', 'Esta es una nota de prueba', 1, 1, '2022-01-01', 1, 2, CURRENT_TIMESTAMP);
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+----------------------------- VISTAS ------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+-- Vista para obtener los permisos por cada rol del sistema
 CREATE VIEW vista_permisos_rol AS
 SELECT r.id_rol, r.nombre as nombre_rol, p.id_permiso, p.nombre as nombre_permiso
 FROM roles r
 INNER JOIN roles_permisos rp ON r.id_rol = rp.id_rol
 INNER JOIN permisos p ON rp.id_permiso = p.id_permiso;
 
-SELECT p.nombre AS permiso
-FROM Usuarios u
-JOIN Usuarios_Roles ur ON u.id = ur.usuario_id
-JOIN Roles r ON ur.rol_id = r.id
-JOIN Roles_Permisos rp ON r.id = rp.rol_id
-JOIN Permisos p ON rp.permiso_id = p.id
-WHERE u.id = 1
+-- Vista para obtener los usuarios por cada rol del sistema
+CREATE VIEW vista_usuarios_rol AS
+SELECT u.id_usuario, u.nombres as nombre_usuario, u.apellido_paterno, r.id_rol, r.nombre as nombre_rol
+FROM usuarios u
+INNER JOIN usuarios_roles ur ON u.id_usuario = ur.id_usuario
+INNER JOIN roles r ON ur.id_rol = r.id_rol;
+
+-- Vista para obtener los permisos de un usuario
+CREATE VIEW vista_permisos_usuario AS
+SELECT p.nombre AS permiso, u.nombres
+FROM usuarios u
+JOIN usuarios_roles ur ON u.id_usuario = ur.id_usuario
+JOIN roles r ON ur.id_rol = r.id_rol
+JOIN roles_permisos rp ON r.id_rol = rp.id_rol
+JOIN permisos p ON rp.id_permiso = p.id_permiso
 UNION
-SELECT p.nombre AS permiso
-FROM Usuarios u
-JOIN Usuarios_Permisos up ON u.id = up.usuario_id
-JOIN Permisos p ON up.permiso_id = p.id
-WHERE u.id = 1;
+SELECT p.nombre AS permiso, u.nombres
+FROM usuarios u
+JOIN usuarios_permisos up ON u.id_usuario = up.id_usuario
+JOIN permisos p ON up.id_permiso = p.id_permiso
