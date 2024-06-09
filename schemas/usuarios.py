@@ -1,12 +1,13 @@
 from datetime import date, datetime
 from typing import Optional
+from unittest.mock import Base
 
 from click import Option
 
 from pydantic import BaseModel
 
-class EstadoUsuario(BaseModel):
-  id_estado_usuario: Optional[int]
+class EstadosEmpleados(BaseModel):
+  id_estado_empleado: Optional[int] = None
   nombre: Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
@@ -14,8 +15,8 @@ class EstadoUsuario(BaseModel):
   class Config:
       orm_mode = True
 
-class Usuario(BaseModel):
-  id_usuario: Optional[int]
+class Empleados(BaseModel):
+  id_empleado: Optional[int] = None
   dni: Optional[str] = None
   nombres: Optional[str] = None
   apellido_paterno: Optional[str] = None
@@ -28,13 +29,14 @@ class Usuario(BaseModel):
   id_area : Optional[int] = None
   id_cargo : Optional[int] = None
   id_equipo : Optional[int] = None
-  usuario : Optional[str] = None
-  password : Optional[str] = None
-  token : Optional[str] = None
-  id_rol : Optional[int] = None
-  id_estado_usuario : Optional[int] = None
+  id_estado_empleado : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
   class Config:
       orm_mode = True
+
+# ARREGLAR TABLA USUARIO
+class Usuarios(BaseModel):
+  usuario: str
+  password: str

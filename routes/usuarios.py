@@ -25,65 +25,72 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 """
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
-ESTADOS USUARIOS FUNCTIONS
+EMPLEADOS FUNCTIONS
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
 
 """
 
-@usuarios.get("/usuarios", response_model=List[schemas_user.Usuario])
-async def get_usuarios(db: db_dependency):
-    usuarios = db.query(models_user.Usuarios).all()
-    return usuarios
+@usuarios.get("/empleados", tags= ["Operaciones Empleados"], response_model=List[schemas_user.Empleados])
+async def get_empleados(db: db_dependency):
+    empleados_d = db.query(models_user.Empleados).all()
+    return empleados_d
 
-@usuarios.get("/usuario/{id_usuario}", response_model=schemas_user.Usuario)
-async def get_usuario(id_usuario: int, db: db_dependency):
-    usuario = db.query(models_user.Usuarios).filter(models_user.Usuarios.id_usuario == id_usuario).first()
-    if usuario is None:
-        raise HTTPException(status_code=404, detail="Usuario not found")
-    return usuario
+@usuarios.get("/empleado/{id_empleado}", response_model=schemas_user.Empleados, tags= ["Operaciones Empleados"])
+async def get_empleado(id_empleado: int, db: db_dependency):
+    empleado_d = db.query(models_user.Empleados).filter(models_user.Empleados.id_empleado == id_empleado).first()
+    if empleado_d is None:
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
+    return empleado_d
 
-@usuarios.post("/usuario", response_model=schemas_user.Usuario, status_code = HTTP_201_CREATED)
-async def create_usuario(usuario: schemas_user.Usuario, db: db_dependency):
-    usuario_d = models_user.Usuarios(**usuario.dict())
-    usuario_d.fecha_creacion = datetime.now()
-    usuario.id_estado_usuario = 1
-    db.add(usuario_d)
+@usuarios.post("/empleado", response_model=schemas_user.Empleados, status_code = HTTP_201_CREATED, tags= ["Operaciones Empleados"])
+async def create_empleado(empleado: schemas_user.Empleados, db: db_dependency):
+    empleado_d = models_user.Empleados(**empleado.dict())
+    empleado_d.fecha_creacion = datetime.now()
+    empleado_d.id_estado_empleado = 1
+    db.add(empleado_d)
     db.commit()
-    db.refresh(usuario_d)
+    db.refresh(empleado_d)
     return Response(status_code = HTTP_201_CREATED)
 
-@usuarios.put("/usuario/{id_usuario}", response_model=schemas_user.Usuario)
-async def update_usuario(id_usuario: int, usuario: schemas_user.Usuario, db: db_dependency):
-    usuario_d = db.query(models_user.Usuarios).filter(models_user.Usuarios.id_usuario == id_usuario).first()
-    if usuario_d is None:
-        raise HTTPException(status_code=404, detail="Usuario not found")
-    usuario_d.nombres = usuario.nombres
-    usuario_d.apellido_paterno = usuario.apellido_paterno
-    usuario_d.apellido_materno = usuario.apellido_materno
-    usuario_d.email = usuario.email
-    usuario_d.celular_personal = usuario.celular_personal
-    usuario_d.celular_corporativo = usuario.celular_corporativo
-    usuario_d.id_empresa = usuario.id_empresa
-    usuario_d.id_ciudad = usuario.id_ciudad
-    usuario_d.id_area = usuario.id_area
-    usuario_d.id_cargo = usuario.id_cargo
-    usuario_d.id_equipo = usuario.id_equipo
-    usuario_d.usuario = usuario.usuario
-    usuario_d.password = generate_password_hash(usuario.password, "pbkdf2:sha256:30", 50)
-    usuario_d.id_rol = usuario.id_rol
-    usuario_d.id_estado_usuario = usuario.id_estado_usuario
-    usuario_d.fecha_modificacion = datetime.now()
+@usuarios.put("/empleado/{id_empleado}", response_model=schemas_user.Empleados, tags= ["Operaciones Empleados"])
+async def update_empleado(id_empleado: int, empleado: schemas_user.Empleados, db: db_dependency):
+    empleado_d = db.query(models_user.Empleados).filter(models_user.Empleados.id_empleado == id_empleado).first()
+    if empleado_d is None:
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
+    empleado_d.nombres = empleado.nombres
+    empleado_d.apellido_paterno = empleado.apellido_paterno
+    empleado_d.apellido_materno = empleado.apellido_materno
+    empleado_d.email = empleado.email
+    empleado_d.celular_personal = empleado.celular_personal
+    empleado_d.celular_corporativo = empleado.celular_corporativo
+    empleado_d.id_empresa = empleado.id_empresa
+    empleado_d.id_ciudad = empleado.id_ciudad
+    empleado_d.id_area = empleado.id_area
+    empleado_d.id_cargo = empleado.id_cargo
+    empleado_d.id_equipo = empleado.id_equipo
+    # empleado_d.usuario = empleado.usuario
+    # empleado_d.password = generate_password_hash(empleado.password, "pbkdf2:sha256:30", 50)
+    # empleado_d.id_rol = empleado.id_rol
+    empleado_d.id_estado_empleado = empleado.id_estado_empleado
+    empleado_d.fecha_modificacion = datetime.now()
     db.commit()
-    db.refresh(usuario_d)
-    return usuario_d
+    db.refresh(empleado_d)
+    return empleado_d
 
-@usuarios.delete("/usuario/{id_usuario}", response_model=schemas_user.Usuario, status_code = HTTP_204_NO_CONTENT)
-async def delete_usuario(id_usuario: int, db: db_dependency):
-    usuario_d = db.query(models_user.Usuarios).filter(models_user.Usuarios.id_usuario == id_usuario).first()
+@usuarios.delete("/empleado/{id_empleado}", status_code = HTTP_204_NO_CONTENT, tags= ["Operaciones Empleados"])
+async def delete_empleado(id_empleado: int, db: db_dependency):
+    usuario_d = db.query(models_user.Empleados).filter(models_user.Empleados.id_empleado == id_empleado).first()
     if usuario_d is None:
-        raise HTTPException(status_code=404, detail="Usuario not found")
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
     usuario_d.fecha_eliminacion = datetime.now()
-    usuario_d.id_estado_usuario = 2
+    usuario_d.id_estado_empleado = 2
     db.commit()
     db.refresh(usuario_d)
     return Response(status_code = HTTP_204_NO_CONTENT)
+
+"""
+༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
+USUARIOS FUNCTIONS
+༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
+
+"""

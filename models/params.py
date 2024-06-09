@@ -37,7 +37,7 @@ class Areas(Base):
   fecha_eliminacion = Column(DateTime)
 
 class Cargo(Base):
-  __tablename__ = 'cargo'
+  __tablename__ = 'cargos'
   id_cargo = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))
   id_area = Column(Integer, ForeignKey('areas.id_area'))
@@ -46,7 +46,7 @@ class Cargo(Base):
   fecha_eliminacion = Column(DateTime)
 
 class Equipo(Base):
-  __tablename__ = 'equipo'
+  __tablename__ = 'equipos'
   id_equipo = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))
   fecha_creacion = Column(DateTime)
@@ -61,10 +61,19 @@ class Roles(Base):
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
 
+class TagPermisos(Base):
+  __tablename__ = 'tag_permisos'
+  id_tag = Column(Integer, primary_key=True, autoincrement=True)
+  nombre = Column(String(250))
+  fecha_creacion = Column(DateTime)
+  fecha_modificacion = Column(DateTime)
+  fecha_eliminacion = Column(DateTime)
+
 class Permisos(Base):
   __tablename__ = 'permisos'
   id_permiso = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))
+  id_tag = Column(Integer, ForeignKey('tag_permisos.id_tag'))
   fecha_creacion = Column(DateTime)
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
@@ -74,6 +83,15 @@ class RolesPermisos(Base):
   id_rol_permiso = Column(Integer, primary_key=True, autoincrement=True)
   id_rol = Column(Integer, ForeignKey('roles.id_rol'))
   id_permiso = Column(Integer, ForeignKey('permisos.id_permiso'))
+  fecha_creacion = Column(DateTime)
+  fecha_modificacion = Column(DateTime)
+  fecha_eliminacion = Column(DateTime)
+
+class UsuariosRoles(Base):
+  __tablename__ = 'usuarios_roles'
+  id_usuario_rol = Column(Integer, primary_key=True, autoincrement=True)
+  id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
+  id_rol = Column(Integer, ForeignKey('roles.id_rol'))
   fecha_creacion = Column(DateTime)
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
@@ -93,5 +111,8 @@ class Logs(Base):
   id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
   accion = Column(String(250))
   tabla = Column(String(250))
+  campo = Column(String(250))
+  valor_anterior = Column(Text)
+  valor_nuevo = Column(Text)
   descripcion = Column(Text)
   fecha_creacion = Column(DateTime)

@@ -3,17 +3,17 @@ from sqlalchemy import Column, ForeignKey, Text
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime
 
 
-class EstadoUsuario(Base):
-  __tablename__ = 'estado_usuario'
-  id_estado_usuario = Column(Integer, primary_key=True, autoincrement=True)
+class EstadosEmpleados(Base):
+  __tablename__ = 'estados_empleados'
+  id_estado_empleado = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))
   fecha_creacion = Column(DateTime)
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
 
-class Usuarios(Base):
-  __tablename__ = 'usuarios'
-  id_usuario = Column(Integer, primary_key=True, autoincrement=True)
+class Empleados(Base):
+  __tablename__ = 'empleados'
+  id_empleado = Column(Integer, primary_key=True, autoincrement=True)
   dni = Column(String(50))
   nombres = Column(Text)
   apellido_paterno = Column(String(250))
@@ -26,11 +26,9 @@ class Usuarios(Base):
   id_area = Column(Integer, ForeignKey('areas.id_area'))
   id_cargo = Column(Integer, ForeignKey('cargo.id_cargo'))
   id_equipo = Column(Integer, ForeignKey('equipo.id_equipo'))
-  usuario = Column(String(50))
-  password = Column(Text)
-  token = Column(Text)
-  id_rol = Column(Integer, ForeignKey('roles.id_rol'))
-  id_estado_usuario = Column(Integer, ForeignKey('estado_usuario.id_estado_usuario'))
+  id_estado_empleado = Column(Integer, ForeignKey('estados_empleados.id_estado_empleado'))
   fecha_creacion = Column(DateTime)
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
+
+# AGREGAR TABLA USUARIOS
