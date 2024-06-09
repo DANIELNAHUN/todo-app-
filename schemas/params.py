@@ -68,9 +68,19 @@ class Roles(BaseModel):
   class Config:
       orm_mode = True
 
+class TagPermisos(BaseModel):
+  id_tag : Optional[int] = None
+  nombre: Optional[str] = None
+  fecha_creacion: Optional[datetime] = None
+  fecha_modificacion: Optional[datetime] = None
+  fecha_eliminacion: Optional[datetime] = None
+  class Config:
+      orm_mode = True
+
 class Permisos(BaseModel):
   id_permiso : Optional[int] = None
   nombre : Optional[str] = None
+  id_tag: Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -81,6 +91,16 @@ class RolesPermisos(BaseModel):
   id_rol_permiso : Optional[int] = None
   id_rol : Optional[int] = None
   id_permiso : Optional[int] = None
+  fecha_creacion: Optional[datetime] = None
+  fecha_modificacion: Optional[datetime] = None
+  fecha_eliminacion: Optional[datetime] = None
+  class Config:
+      orm_mode = True
+
+class UsuariosRoles(BaseModel):
+  id_usuario_rol : Optional[int] = None
+  id_usuario : Optional[int] = None
+  id_rol : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None
@@ -102,6 +122,9 @@ class Logs(BaseModel):
   id_usuario : Optional[int] = None
   accion : Optional[str] = None
   tabla : Optional[str] = None
+  campo: Optional[str] = None
+  valor_anterior: Optional[str] = None
+  valor_nuevo: Optional[str] = None
   descripcion : Optional[str] = None
   fecha_creacion: Optional[datetime] = None
   class Config:

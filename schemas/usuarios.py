@@ -38,5 +38,13 @@ class Empleados(BaseModel):
 
 # ARREGLAR TABLA USUARIO
 class Usuarios(BaseModel):
-  usuario: str
-  password: str
+  id_usuario: Optional[int] = None
+  username: Optional[str] = None
+  userpassword: Optional[str] = None
+  usertoken: Optional[str] = None
+  id_empleado: Optional[int] = None
+  fecha_creacion: Optional[datetime] = None
+  fecha_modificacion: Optional[datetime] = None
+  fecha_eliminacion: Optional[datetime] = None
+  class Config:
+      orm_mode = True

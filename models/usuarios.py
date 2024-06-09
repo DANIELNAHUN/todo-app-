@@ -32,3 +32,13 @@ class Empleados(Base):
   fecha_eliminacion = Column(DateTime)
 
 # AGREGAR TABLA USUARIOS
+class Usuarios(Base):
+  __tablename__ = 'usuarios'
+  id_usuario = Column(Integer, primary_key=True, autoincrement=True)
+  username = Column(String(250))
+  userpassword = Column(Text)
+  usertoken = Column(Text)
+  id_empleado = Column(Integer, ForeignKey('empleados.id_empleado'))
+  fecha_creacion = Column(DateTime)
+  fecha_modificacion = Column(DateTime)
+  fecha_eliminacion = Column(DateTime)

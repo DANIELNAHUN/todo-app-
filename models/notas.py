@@ -3,7 +3,7 @@ from sqlalchemy import Column, ForeignKey, Text
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime
 
 
-class EstadoNota(Base):
+class EstadosNotas(Base):
   __tablename__ = 'estados_notas'
   id_estado_nota = Column(Integer, primary_key=True)
   nombre = Column(String(50))
@@ -11,7 +11,7 @@ class EstadoNota(Base):
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
 
-class Prioridad(Base):
+class Prioridades(Base):
   __tablename__ = 'prioridades'
   id_prioridad = Column(Integer, primary_key=True)
   nombre = Column(String(50))

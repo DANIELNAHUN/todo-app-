@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class EstadoNota(BaseModel):
+class EstadosNotas(BaseModel):
   id_estado_nota: Optional[int] = None
   nombre: Optional[str] = None
   fecha_creacion: Optional[datetime] = None
@@ -13,7 +13,7 @@ class EstadoNota(BaseModel):
   class Config:
       orm_mode = True
 
-class Prioridad(BaseModel):
+class Prioridades(BaseModel):
   id_prioridad: Optional[int] = None
   nombre: Optional[str] = None
   fecha_creacion: Optional[datetime] = None
