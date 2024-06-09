@@ -36,7 +36,7 @@ class Areas(Base):
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
 
-class Cargo(Base):
+class Cargos(Base):
   __tablename__ = 'cargos'
   id_cargo = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))
@@ -45,7 +45,7 @@ class Cargo(Base):
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)
 
-class Equipo(Base):
+class Equipos(Base):
   __tablename__ = 'equipos'
   id_equipo = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))

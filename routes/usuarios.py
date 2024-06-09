@@ -68,9 +68,7 @@ async def update_empleado(id_empleado: int, empleado: schemas_user.Empleados, db
     empleado_d.id_area = empleado.id_area
     empleado_d.id_cargo = empleado.id_cargo
     empleado_d.id_equipo = empleado.id_equipo
-    # empleado_d.usuario = empleado.usuario
     # empleado_d.password = generate_password_hash(empleado.password, "pbkdf2:sha256:30", 50)
-    # empleado_d.id_rol = empleado.id_rol
     empleado_d.id_estado_empleado = empleado.id_estado_empleado
     empleado_d.fecha_modificacion = datetime.now()
     db.commit()
@@ -94,3 +92,19 @@ USUARIOS FUNCTIONS
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
 
 """
+def get_user(db: db_dependency, username: str):
+    usuario = db.query(models_user.Usuarios).filter(models_user.Usuarios.username == username).first()
+    if usuario is None:
+        return []
+    return usuario
+
+def verify_password(password: str, password_hash: str):
+    return check_password_hash(password_hash, password)
+
+def authenticate_user(db: db_dependency, username: str, password: str):
+    usuario = get_user(db, username)
+    if not usuario:
+        raise HTTPException(status_code=401, detail="Usuario no encontrado", headers={"WWW-Authenticate": "Bearer"})
+    if not verify_password(password, usuario.userpassword):
+        raise HTTPException(status_code=401, detail="Contraseña incorrecta", headers={"WWW-Authenticate": "Bearer"})
+    return usuario
