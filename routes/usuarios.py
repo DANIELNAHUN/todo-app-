@@ -1,17 +1,21 @@
+from json import load
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Annotated, List
+from dotenv import load_dotenv
 
 from fastapi import APIRouter, Depends, HTTPException, Response
 from starlette.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash, check_password_hash
+from jose import jwt, JWTError
 
 import models.usuarios as models_user
 import schemas.usuarios as schemas_user
 from config.db_todo import SessionLocal
 
 usuarios = APIRouter()
+load_dotenv()
 
 def get_db():
     db = SessionLocal()
@@ -68,7 +72,6 @@ async def update_empleado(id_empleado: int, empleado: schemas_user.Empleados, db
     empleado_d.id_area = empleado.id_area
     empleado_d.id_cargo = empleado.id_cargo
     empleado_d.id_equipo = empleado.id_equipo
-    # empleado_d.password = generate_password_hash(empleado.password, "pbkdf2:sha256:30", 50)
     empleado_d.id_estado_empleado = empleado.id_estado_empleado
     empleado_d.fecha_modificacion = datetime.now()
     db.commit()
@@ -108,3 +111,27 @@ def authenticate_user(db: db_dependency, username: str, password: str):
     if not verify_password(password, usuario.userpassword):
         raise HTTPException(status_code=401, detail="Contraseña incorrecta", headers={"WWW-Authenticate": "Bearer"})
     return usuario
+
+def create_token(data: dict):
+    data_token = data.copy()
+    data_token['exp'] = datetime.utcnow() + timedelta(seconds=int(os.getenv("TK_SEC_EXP")))
+    access_token = jwt.encode(data_token, key=os.getenv("SECRET_KEY"), algorithm="HS256")
+    return access_token
+
+@usuarios.post("/usuario", response_model=schemas_user.Usuarios, status_code = HTTP_201_CREATED, tags= ["Operaciones Usuarios"])
+async def create_user(db: db_dependency, user: schemas_user.Usuarios):
+    usuario_d = models_user.Usuarios(**user.dict())
+    usuario_d.userpassword = generate_password_hash(user.userpassword, "pbkdf2:sha256:30")
+    usuario_d.fecha_creacion = datetime.now()
+    db.add(usuario_d)
+    db.commit()
+    db.refresh(usuario_d)
+    return usuario_d
+
+@usuarios.post("/login", tags= ["Operaciones Usuarios"])
+async def login_user(db: db_dependency, user: schemas_user.Usuarios):
+    usuario_d = authenticate_user(db, user.username, user.userpassword)
+    if not usuario_d:
+        raise HTTPException(status_code=401, detail="Usuario no encontrado", headers={"WWW-Authenticate": "Bearer"})
+    token = create_token({"sub": usuario_d.username})
+    return token
