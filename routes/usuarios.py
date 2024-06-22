@@ -15,6 +15,7 @@ import models.params as models_params
 import models.usuarios as models_user
 import schemas.usuarios as schemas_user
 from config.db_todo import SessionLocal
+from . import functions as func
 
 usuarios = APIRouter()
 load_dotenv()
@@ -38,10 +39,11 @@ EMPLEADOS FUNCTIONS
 
 @usuarios.get("/empleados", tags= ["Operaciones Empleados"], response_model=List[schemas_user.Empleados])
 async def get_empleados(db: db_dependency, token: str):
-    user = get_user_by_usertoken(db=db, token=token)
-    if user is None:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    list_permisos = get_permisos_by_user(db=db, id_usuario=user.id_usuario)
+    # user = get_user_by_usertoken(db=db, token=token)
+    # if user is None:
+    #     raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    # list_permisos = get_permisos_by_user(db=db, id_usuario=user.id_usuario)
+    list_permisos = func.get_permisos(db=db, token=token)
     if 8 in list_permisos:
         empleados_d = db.query(models_user.Empleados).all()
         return empleados_d
@@ -109,6 +111,13 @@ def get_user_by_username(db: db_dependency, username: str):
     if usuario is None:
         return []
     return usuario
+
+def get_permisos(db: db_dependency, token: str):
+    user = get_user_by_usertoken(db=db, token=token)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    list_permisos = get_permisos_by_user(db=db, id_usuario=user.id_usuario)
+    return list_permisos
 
 def get_user_by_usertoken(db: db_dependency, token: str):
     usuario = db.query(models_user.Usuarios).filter(models_user.Usuarios.usertoken == token).first()

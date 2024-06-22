@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 from routes.notas import notas
 from routes.params import params
@@ -15,7 +16,8 @@ app = FastAPI(
     contact={
         "name": "Daniel Calcina",
         "email": "danielnahuncalcinafuentes@gmail.com"
-    }
+    },
+    swagger_ui_parameters={"filter": ''}
 )
 
 origins = [
@@ -30,6 +32,10 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
+
+@app.get("/", include_in_schema=False)
+def main():
+    return RedirectResponse(url="/docs")
 
 app.include_router(notas, prefix='/api/todo/notas')
 app.include_router(params, prefix='/api/todo/parametros')
