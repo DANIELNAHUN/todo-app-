@@ -59,6 +59,16 @@ async def get_empleado(id_empleado: int, token:str, db: db_dependency):
     else:
         raise HTTPException(status_code=403, detail="Acceso denegado")
 
+@usuarios.get("/empleado", response_model=schemas_user.Empleados, tags= ["Operaciones Empleados"])
+async def get_empleado_by_token(token: str, db: db_dependency):
+    usuario = db.query(models_user.Usuarios).filter(models_user.Usuarios.usertoken == token).first()
+    if usuario is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    empleado = db.query(models_user.Empleados).filter(models_user.Empleados.id_empleado == usuario.id_empleado).first()
+    if empleado is None:
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
+    return empleado
+
 @usuarios.post("/empleado", response_model=schemas_user.Empleados, status_code = HTTP_201_CREATED, tags= ["Operaciones Empleados"])
 async def create_empleado(empleado: schemas_user.Empleados, token: str, db: db_dependency):
     list_permisos = func.get_permisos(db=db, token=token)
@@ -168,7 +178,10 @@ async def login_user(db: db_dependency, user: schemas_user.Usuarios):
         token = usuario_d.usertoken
     db.commit()
     db.refresh(usuario_d)
-    return usuario_d
+    response = {
+        "usertoken": usuario_d.usertoken
+    }
+    return response
 
 @usuarios.post("/logout", tags= ["Operaciones Usuarios"])
 async def logout_user(db: db_dependency, user: schemas_user.Usuarios):
