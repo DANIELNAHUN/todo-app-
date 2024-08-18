@@ -15,6 +15,7 @@ import models.params as models_params
 import models.usuarios as models_user
 import schemas.usuarios as schemas_user
 from config.db_todo import SessionLocal
+
 from . import functions as func
 
 usuarios = APIRouter()
@@ -193,3 +194,13 @@ async def logout_user(db: db_dependency, user: schemas_user.Usuarios):
     db.refresh(usuario_d)
     return usuario_d
 
+"""
+༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
+ESTADOS EMPLEADOS FUNCTIONS
+༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
+
+"""
+@usuarios.get("/estados_empleados", response_model=List[schemas_user.EstadosEmpleados], tags= ["Operaciones Parametros", "Crud Estados Empleados"])
+async def get_estados_empleados(db: db_dependency):
+    estados_empleados = db.query(models_user.EstadosEmpleados).all()
+    return estados_empleados

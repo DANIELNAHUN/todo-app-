@@ -4,12 +4,14 @@ from typing import Annotated, List, ParamSpecArgs
 from urllib import response
 
 from fastapi import APIRouter, Depends, HTTPException, Response
-from starlette.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED
 from sqlalchemy.orm import Session
+from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
 
 import models.params as models_par
 import schemas.params as schemas_par
 from config.db_todo import SessionLocal
+
+from . import functions as func
 
 params = APIRouter()
 
@@ -71,8 +73,10 @@ CIUDADES FUNCTIONS
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
 
 """
-
-
+@params.get("/ciudades", response_model=List[schemas_par.Ciudades], tags= ["Operaciones Parametros", "Crud Ciudades"])
+async def get_ciudades(db: db_dependency):
+    ciudades = db.query(models_par.Ciudades).all()
+    return ciudades
 
 
 """
@@ -91,7 +95,10 @@ AREAS FUNCTIONS
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
 
 """
-
+@params.get("/areas", response_model=List[schemas_par.Areas], tags= ["Operaciones Parametros", "Crud Areas"])
+async def get_areas(db: db_dependency):
+    areas = db.query(models_par.Areas).all()
+    return areas
 
 
 
@@ -101,7 +108,10 @@ CARGOS FUNCTIONS
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
 
 """
-
+@params.get("/cargos", response_model=List[schemas_par.Cargo], tags= ["Operaciones Parametros", "Crud Cargos"])
+async def get_cargos(db: db_dependency):
+    cargos = db.query(models_par.Cargos).all()
+    return cargos
 
 
 
@@ -111,8 +121,10 @@ EQUIPOS FUNCTIONS
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
 
 """
-
-
+@params.get("/equipos", response_model=List[schemas_par.Equipo], tags= ["Operaciones Parametros", "Crud Equipos"])
+async def get_equipos(db: db_dependency):
+    equipos = db.query(models_par.Equipos).all()
+    return equipos
 
 
 
@@ -151,6 +163,11 @@ async def get_permisos(db: db_dependency):
     permisos = db.query(models_par.Permisos).all()
     return permisos
 
+@params.get("/permisos_by_token", tags= ["Operaciones Parametros", "Crud Permisos"])
+async def get_permisos_by_token(token:str, db: db_dependency):
+    permisos = func.get_permisos(db=db, token=token)
+    # permisos = func.get_permisos_by_user(db=db, id_usuario=usuario.id_usuario)
+    return permisos
 
 
 """
@@ -188,6 +205,7 @@ USUARIOS PERMISOS FUNCTIONS
 async def get_usuarios_permisos(db: db_dependency):
     usuarios_permisos = db.query(models_par.UsuariosPermisos).all()
     return usuarios_permisos
+
 
 
 """
