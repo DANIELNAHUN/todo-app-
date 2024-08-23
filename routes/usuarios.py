@@ -8,7 +8,8 @@ from fastapi import APIRouter, Depends, HTTPException, Response
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from starlette.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
-                              HTTP_404_NOT_FOUND)
+                              HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND,
+                              HTTP_409_CONFLICT)
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import models.params as models_params
@@ -70,7 +71,8 @@ async def get_empleado_by_token(token: str, db: db_dependency):
         raise HTTPException(status_code=404, detail="Empleado no encontrado")
     return empleado
 
-@usuarios.post("/empleado", response_model=schemas_user.Empleados, status_code = HTTP_201_CREATED, tags= ["Operaciones Empleados"])
+
+@usuarios.post("/empleado", status_code = HTTP_201_CREATED, tags= ["Operaciones Empleados"])
 async def create_empleado(empleado: schemas_user.Empleados, token: str, db: db_dependency):
     list_permisos = func.get_permisos(db=db, token=token)
     # Permiso CREAR EMPLEADO es el 6
@@ -78,12 +80,15 @@ async def create_empleado(empleado: schemas_user.Empleados, token: str, db: db_d
         empleado_d = models_user.Empleados(**empleado.dict())
         empleado_d.fecha_creacion = datetime.now()
         empleado_d.id_estado_empleado = 1
+        empleado_existe = db.query(models_user.Empleados).filter(models_user.Empleados.dni == empleado_d.dni).first()
+        if empleado_existe:
+            raise HTTPException(status_code=HTTP_409_CONFLICT, detail="Empleado ya existe")
         db.add(empleado_d)
         db.commit()
         db.refresh(empleado_d)
-        return Response(status_code = HTTP_201_CREATED)
+        return Response(status_code = HTTP_201_CREATED, detail="Empleado creado")
     else:
-        raise HTTPException(status_code=403, detail="Acceso denegado")
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Acceso denegado")
 
 @usuarios.put("/empleado/{id_empleado}", response_model=schemas_user.Empleados, tags= ["Operaciones Empleados"])
 async def update_empleado(id_empleado: int, empleado: schemas_user.Empleados, token:str, db: db_dependency):
