@@ -1,6 +1,7 @@
-from config.db_todo import Base
 from sqlalchemy import Column, ForeignKey, Text
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime
+from sqlalchemy.sql.sqltypes import DateTime, Integer, String
+
+from config.db_todo import Base
 
 
 class EstadosEmpleados(Base):
@@ -24,8 +25,8 @@ class Empleados(Base):
   id_empresa = Column(Integer, ForeignKey('empresas.id_empresa'))
   id_ciudad = Column(Integer, ForeignKey('ciudades.id_ciudad'))
   id_area = Column(Integer, ForeignKey('areas.id_area'))
-  id_cargo = Column(Integer, ForeignKey('cargo.id_cargo'))
-  id_equipo = Column(Integer, ForeignKey('equipo.id_equipo'))
+  id_cargo = Column(Integer, ForeignKey('cargos.id_cargo'))
+  id_equipo = Column(Integer, ForeignKey('equipos.id_equipo'))
   id_estado_empleado = Column(Integer, ForeignKey('estados_empleados.id_estado_empleado'))
   fecha_creacion = Column(DateTime)
   fecha_modificacion = Column(DateTime)

@@ -86,7 +86,7 @@ async def create_empleado(empleado: schemas_user.Empleados, token: str, db: db_d
         db.add(empleado_d)
         db.commit()
         db.refresh(empleado_d)
-        return Response(status_code = HTTP_201_CREATED, detail="Empleado creado")
+        return Response(status_code = HTTP_201_CREATED)
     else:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Acceso denegado")
 
