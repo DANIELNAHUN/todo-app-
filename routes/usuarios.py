@@ -71,6 +71,34 @@ async def get_empleado_by_token(token: str, db: db_dependency):
         raise HTTPException(status_code=404, detail="Empleado no encontrado")
     return empleado
 
+@usuarios.post("/empleados_by_filters", response_model=List[schemas_user.Empleados], tags= ["Operaciones Empleados"])
+async def get_empleado_filtros(token: str, filters: schemas_user.EmpleadoFiltros, db: db_dependency):
+    list_permisos = func.get_permisos(db=db, token=token)
+    # Permiso CONSULTAR DATOS EMPLEADO PROPIO es el 8
+    if 8 in list_permisos:
+        all_empty = all(len(value) == 0 for value in filters.dict().values())
+        if not all_empty:
+            query = db.query(models_user.Empleados)
+            if filters.list_empresas:
+                query = query.filter(models_user.Empleados.id_empresa.in_(tuple(filters.list_empresas)))
+            if filters.list_ciudades:
+                query = query.filter(models_user.Empleados.id_ciudad.in_(tuple(filters.list_ciudades)))
+            if filters.list_oficinas:
+                query = query.filter(models_user.Empleados.id_oficina.in_(tuple(filters.list_oficinas)))
+            if filters.list_areas:
+                query = query.filter(models_user.Empleados.id_area.in_(tuple(filters.list_areas)))
+            if filters.list_cargos:
+                query = query.filter(models_user.Empleados.id_cargo.in_(tuple(filters.list_cargos)))
+            if filters.list_equipos:
+                query = query.filter(models_user.Empleados.id_equipo.in_(tuple(filters.list_equipos)))
+            if filters.list_estados_empleados:
+                query = query.filter(models_user.Empleados.id_estado_empleado.in_(tuple(filters.list_estados_empleados)))
+            empleados_d = query.all()
+            return empleados_d
+        empleados_d = db.query(models_user.Empleados).all()
+        return empleados_d
+    else:
+        raise HTTPException(status_code=403, detail="Acceso denegado")
 
 @usuarios.post("/empleado", status_code = HTTP_201_CREATED, tags= ["Operaciones Empleados"])
 async def create_empleado(empleado: schemas_user.Empleados, token: str, db: db_dependency):
@@ -78,11 +106,11 @@ async def create_empleado(empleado: schemas_user.Empleados, token: str, db: db_d
     # Permiso CREAR EMPLEADO es el 6
     if 6 in list_permisos:
         empleado_d = models_user.Empleados(**empleado.dict())
-        empleado_d.fecha_creacion = datetime.now()
-        empleado_d.id_estado_empleado = 1
         empleado_existe = db.query(models_user.Empleados).filter(models_user.Empleados.dni == empleado_d.dni).first()
         if empleado_existe:
             raise HTTPException(status_code=HTTP_409_CONFLICT, detail="Empleado ya existe")
+        empleado_d.fecha_creacion = datetime.now()
+        empleado_d.id_estado_empleado = 1
         db.add(empleado_d)
         db.commit()
         db.refresh(empleado_d)
@@ -106,6 +134,7 @@ async def update_empleado(id_empleado: int, empleado: schemas_user.Empleados, to
         empleado_d.celular_corporativo = empleado.celular_corporativo
         empleado_d.id_empresa = empleado.id_empresa
         empleado_d.id_ciudad = empleado.id_ciudad
+        empleado_d.id_oficina = empleado.id_oficina
         empleado_d.id_area = empleado.id_area
         empleado_d.id_cargo = empleado.id_cargo
         empleado_d.id_equipo = empleado.id_equipo

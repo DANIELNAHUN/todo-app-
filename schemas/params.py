@@ -3,6 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+
 class Empresas(BaseModel):
   id_empresa : Optional[int] = None
   nombre : Optional[str] = None
@@ -15,6 +16,17 @@ class Empresas(BaseModel):
 class Ciudades(BaseModel):
   id_ciudad : Optional[int] = None
   nombre : Optional[str] = None
+  fecha_creacion: Optional[datetime] = None
+  fecha_modificacion: Optional[datetime] = None
+  fecha_eliminacion: Optional[datetime] = None
+  class Config:
+      orm_mode = True
+
+class Oficinas(BaseModel):
+  id_oficina : Optional[int] = None
+  nombre : Optional[str] = None
+  ubicacion : Optional[str] = None
+  id_ciudad : Optional[int] = None
   fecha_creacion: Optional[datetime] = None
   fecha_modificacion: Optional[datetime] = None
   fecha_eliminacion: Optional[datetime] = None

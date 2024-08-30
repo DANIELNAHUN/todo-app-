@@ -78,6 +78,17 @@ async def get_ciudades(db: db_dependency):
     ciudades = db.query(models_par.Ciudades).all()
     return ciudades
 
+"""
+༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
+OFICINAS FUNCTIONS
+༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄
+
+"""
+@params.get("/oficinas", response_model=List[schemas_par.Oficinas], tags= ["Operaciones Parametros", "Crud Oficinas"])
+async def get_oficinas(db: db_dependency):
+    oficinas = db.query(models_par.Oficinas).all()
+    return oficinas
+
 
 """
 ༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄༄

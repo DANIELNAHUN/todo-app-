@@ -1,6 +1,7 @@
-from config.db_todo import Base
 from sqlalchemy import Column, ForeignKey, Text
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime
+from sqlalchemy.sql.sqltypes import DateTime, Integer, String
+
+from config.db_todo import Base
 
 
 class Empresas(Base):
@@ -15,6 +16,16 @@ class Ciudades(Base):
   __tablename__ = 'ciudades'
   id_ciudad = Column(Integer, primary_key=True, autoincrement=True)
   nombre = Column(String(250))
+  fecha_creacion = Column(DateTime)
+  fecha_modificacion = Column(DateTime)
+  fecha_eliminacion = Column(DateTime)
+
+class Oficinas(Base):
+  __tablename__ = 'oficinas'
+  id_oficina = Column(Integer, primary_key=True, autoincrement=True)
+  nombre = Column(String(250))
+  ubicacion = Column(Text)
+  id_ciudad = Column(Integer, ForeignKey('ciudades.id_ciudad'))
   fecha_creacion = Column(DateTime)
   fecha_modificacion = Column(DateTime)
   fecha_eliminacion = Column(DateTime)

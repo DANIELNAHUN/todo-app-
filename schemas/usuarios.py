@@ -1,10 +1,8 @@
 from datetime import date, datetime
-from typing import Optional
-from unittest.mock import Base
-
-from click import Option
+from typing import List, Optional
 
 from pydantic import BaseModel
+
 
 class EstadosEmpleados(BaseModel):
   id_estado_empleado: Optional[int] = None
@@ -26,6 +24,7 @@ class Empleados(BaseModel):
   celular_corporativo : Optional[int] = None
   id_empresa : Optional[int] = None
   id_ciudad : Optional[int] = None
+  id_oficina: Optional[int] = None
   id_area : Optional[int] = None
   id_cargo : Optional[int] = None
   id_equipo : Optional[int] = None
@@ -36,7 +35,6 @@ class Empleados(BaseModel):
   class Config:
       orm_mode = True
 
-# ARREGLAR TABLA USUARIO
 class Usuarios(BaseModel):
   id_usuario: Optional[int] = None
   username: Optional[str] = None
@@ -48,3 +46,12 @@ class Usuarios(BaseModel):
   fecha_eliminacion: Optional[datetime] = None
   class Config:
       orm_mode = True
+
+class EmpleadoFiltros(BaseModel):
+  list_empresas: Optional[List[int]] = None
+  list_ciudades: Optional[List[int]] = None
+  list_oficinas: Optional[List[int]] = None
+  list_areas: Optional[List[int]] = None
+  list_cargos: Optional[List[int]] = None
+  list_equipos: Optional[List[int]] = None
+  list_estados_empleados: Optional[List[int]] = None

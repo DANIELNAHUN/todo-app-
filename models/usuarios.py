@@ -24,6 +24,7 @@ class Empleados(Base):
   celular_corporativo = Column(Integer)
   id_empresa = Column(Integer, ForeignKey('empresas.id_empresa'))
   id_ciudad = Column(Integer, ForeignKey('ciudades.id_ciudad'))
+  id_oficina = Column(Integer, ForeignKey('oficinas.id_oficina'))
   id_area = Column(Integer, ForeignKey('areas.id_area'))
   id_cargo = Column(Integer, ForeignKey('cargos.id_cargo'))
   id_equipo = Column(Integer, ForeignKey('equipos.id_equipo'))

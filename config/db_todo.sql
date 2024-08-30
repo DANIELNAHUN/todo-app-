@@ -21,6 +21,18 @@ CREATE TABLE ciudades(
   PRIMARY KEY (id_ciudad)
 );
 
+CREATE TABLE oficinas(
+  id_oficina INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(250) NOT NULL,
+  ubicacion TEXT NULL,
+  id_ciudad INT NOT NULL,
+  fecha_creacion DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  fecha_modificacion DATETIME DEFAULT NULL,
+  fecha_eliminacion DATETIME DEFAULT NULL,
+  PRIMARY KEY (id_oficina)
+);
+ALTER TABLE oficinas ADD FOREIGN KEY (id_ciudad) REFERENCES ciudades(id_ciudad);
+
 CREATE TABLE empresas_ciudades(
   id_empresa_ciudad INT NOT NULL AUTO_INCREMENT,
   id_empresa INT NOT NULL,
@@ -87,6 +99,7 @@ CREATE TABLE empleados(
   celular_corporativo INT DEFAULT NULL,
   id_empresa INT NOT NULL,
   id_ciudad INT NOT NULL,
+  id_oficina INT NOT NULL,
   id_area INT NOT NULL,
   id_cargo INT NOT NULL,
   id_equipo INT NOT NULL,
@@ -103,6 +116,7 @@ ALTER TABLE empleados ADD FOREIGN KEY (id_area) REFERENCES areas(id_area);
 ALTER TABLE empleados ADD FOREIGN KEY (id_cargo) REFERENCES cargos(id_cargo);
 ALTER TABLE empleados ADD FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo);
 ALTER TABLE empleados ADD FOREIGN KEY (id_estado_empleado) REFERENCES estados_empleados(id_estado_empleado);
+ALTER TABLE empleados ADD FOREIGN KEY (id_oficina) REFERENCES oficinas(id_oficina);
 
 CREATE TABLE usuarios(
   id_usuario INT NOT NULL AUTO_INCREMENT,
